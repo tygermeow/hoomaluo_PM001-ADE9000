@@ -71,17 +71,17 @@ void loop() {
   }
 
     //*********ACCUMULATE AC POWER DATA*******************
-      avrmsaccum =    avrmsaccum+(ade9000.SPI_Read_32(ADDR_AVRMS)-vrms_os)*vrms_cal;
+      avrmsaccum =    avrmsaccum+(ade9000.SPI_Read_32(ADDR_AVRMS1012)-vrms_os)*vrms_cal;
       airmsaccum =    airmsaccum+(ade9000.SPI_Read_32(ADDR_AIRMS1012)-irms_os)*irms_cal;
       awattaccum =    awattaccum+ade9000.twos_compliment(ade9000.SPI_Read_32(ADDR_AWATT)) * -watt_cal;
       avaaccum =      avaaccum+ade9000.twos_compliment(ade9000.SPI_Read_32(ADDR_AVA)) * -watt_cal;
 
-      bvrmsaccum =    bvrmsaccum+(ade9000.SPI_Read_32(ADDR_BVRMS)-vrms_os)*vrms_cal;
+      bvrmsaccum =    bvrmsaccum+(ade9000.SPI_Read_32(ADDR_BVRMS1012)-vrms_os)*vrms_cal;
       birmsaccum =    birmsaccum+(ade9000.SPI_Read_32(ADDR_BIRMS1012)-irms_os)*irms_cal;
       bwattaccum =    bwattaccum+ade9000.twos_compliment(ade9000.SPI_Read_32(ADDR_BWATT)) * -watt_cal;
       bvaaccum =      bvaaccum+ade9000.twos_compliment(ade9000.SPI_Read_32(ADDR_BVA)) * -watt_cal;
 
-      cvrmsaccum =    cvrmsaccum+(ade9000.SPI_Read_32(ADDR_CVRMS)-vrms_os)*vrms_cal;
+      cvrmsaccum =    cvrmsaccum+(ade9000.SPI_Read_32(ADDR_CVRMS1012)-vrms_os)*vrms_cal;
       cirmsaccum =    cirmsaccum+(ade9000.SPI_Read_32(ADDR_CIRMS1012)-irms_os)*irms_cal;
       cwattaccum =    cwattaccum+ade9000.twos_compliment(ade9000.SPI_Read_32(ADDR_CWATT)) * -watt_cal;
       cvaaccum =      cvaaccum+ade9000.twos_compliment(ade9000.SPI_Read_32(ADDR_CVA)) * -watt_cal;
@@ -106,7 +106,7 @@ void loop() {
       birms =     birmsaccum/dccount;
       bwatt =     bwattaccum/dccount;
       bva =       bvaaccum/dccount;
-      if(bva !=0) bpf = awatt/ava;
+      if(bva !=0) bpf = bwatt/bva;
 
       //*********ACQUIRE AC POWER DATA PHASE C******************
       double cvrms,cirms,cwatt,cpf,cvar,cva;
@@ -114,7 +114,7 @@ void loop() {
       cirms =     cirmsaccum/dccount;
       cwatt =     cwattaccum/dccount;
       cva =       cvaaccum/dccount;
-      if(cva !=0) cpf = awatt/ava;
+      if(cva !=0) cpf = cwatt/cva;
       cvar = sqrt(cva*cva - cwatt*cwatt);
   
         //**************SEND SERIAL DATA**************************
@@ -139,7 +139,6 @@ void loop() {
       senddata += ",\"birms\":";
       senddata += birms;
       senddata += ",\"bwatt2\":";
-      senddata += ",\"cwatt\":";
       senddata += cwatt;
       senddata += ",\"cva\":";
       senddata += cva;
