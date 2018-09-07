@@ -138,7 +138,7 @@ void loop() {
       senddata += bvrms;
       senddata += ",\"birms\":";
       senddata += birms;
-      senddata += ",\"bwatt2\":";
+      senddata += ",\"cwatt\":";
       senddata += cwatt;
       senddata += ",\"cva\":";
       senddata += cva;
